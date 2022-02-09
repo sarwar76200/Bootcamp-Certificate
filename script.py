@@ -9,9 +9,11 @@ black = (54, 54, 54)
 blue = (52, 73, 94)
 
 
-def ordinal(n) -> str:
-    return "%d%s" % (
-        n, "tsnrhtdd"[(n // 10 % 10 != 1) * (n % 10 < 4) * n % 10::4])
+def ordinal(n: int) -> str:
+    array = ['th', 'st', 'nd', 'rd']
+    if (n % 100) > 9 and (n % 100) < 20:
+        return str(n) + 'th'
+    return str(n) + array[0 if(n % 10) > 3 else n % 10]
 
 
 def getSeason(_season) -> str:
@@ -31,14 +33,14 @@ def resize(_imgName, _compressValue) -> None:
     img.save(_imgName, quality=100)
 
 
-def endPoint(_name, _fontSize):
+def endPoint(_name, _fontSize) -> float:
     length = len(_name)
     charSize = _fontSize * 0.4392116714
     spaceSize = charSize * 0.3742203742
     return (length * charSize) + (length * spaceSize)
 
 
-def genImage(participantName):
+def genImage(participantName) -> None:
     img = Image.new('RGBA', (6000, 350), (255, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     _fontSize = 180
@@ -52,14 +54,14 @@ def genImage(participantName):
     resize('image.png', int(compressValue))
 
 
-def addName(_particaipantName):
+def addName(_particaipantName) -> None:
     genImage(_particaipantName)
     img = list(['image.png', 'blank.jpg'])
     front = Image.open(img[0])
     back = Image.open(img[1])
     front = front.convert("RGBA")
     back = back.convert("RGBA")
-    back.paste(front, (380, 950), front)
+    back.paste(front, (380, 940), front)
     back.save(_particaipantName + '.png', format='png', quality=100)
     os.remove('image.png')
 
@@ -130,7 +132,7 @@ def work(_participant, _instructor, _advisor, _date, ) -> None:
     draw = ImageDraw.Draw(img)
 
     # Season on badge
-    draw.text((3008, 1185), 'S' + str(_participant.season),
+    draw.text((3005, 1185), 'S' + str(_participant.season),
               font=font1, anchor="mm", fill=blue)
 
     # Season on text
@@ -138,23 +140,23 @@ def work(_participant, _instructor, _advisor, _date, ) -> None:
               font=font2, anchor="mm", fill=black)
 
     # Solve percentage
-    draw.text((950, 1500), str(_participant.solve) +
+    draw.text((948, 1498), str(_participant.solve) +
               '%', font=font2, anchor="mm", fill=black)
 
     # Rank
-    draw.text((2014, 1500), ordinal(_participant.rank),
-              font=font2, anchor="mm", fill=black)
+    draw.text((1960, 1498), ordinal(_participant.rank),
+              font=font2, anchor="lm", fill=black)
 
     # Total participants
-    draw.text((633, 1572), str(_participant.participants),
+    draw.text((633, 1568), str(_participant.participants),
               font=font2, anchor="mm", fill=black)
 
     # Unique ID
-    draw.text((3161, 235), _participant.uid,
-              font=font3, anchor="mm", fill=black)
+    draw.text((2995, 235), _participant.uid,
+              font=font3, anchor="lm", fill=black)
 
     # Issue date
-    draw.text((3250, 2308), _date, font=font3, anchor="mm", fill=black)
+    draw.text((3250, 2309), _date, font=font3, anchor="mm", fill=black)
 
     # NSUPS information
     putInfo(draw, 1865, 2340, _instructor, 'Season ' +
@@ -166,10 +168,8 @@ def work(_participant, _instructor, _advisor, _date, ) -> None:
 
 
 def saveImage(_img, _name) -> None:
-    # Display edited image
     # _img.show()
-    # Save the edited image
-    _img.save(_name + ".png", quality=100)
+    _img.save(_name.lower() + ".png", quality=100)
 
 
 def generate(participantName: str, contestRank: int, solvePercentage: int, bootcampSeason: int, totalParticaipants: int,
