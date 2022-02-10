@@ -59,8 +59,8 @@ def addName(_particaipantName) -> None:
     img = list(['image.png', 'blank.jpg'])
     front = Image.open(img[0])
     back = Image.open(img[1])
-    front = front.convert("RGBA")
-    back = back.convert("RGBA")
+    front = front.convert('RGBA')
+    back = back.convert('RGBA')
     back.paste(front, (380, 940), front)
     back.save(_particaipantName + '.png', format='png', quality=100)
     os.remove('image.png')
@@ -75,7 +75,7 @@ def putSignature(_draw, _x, _y, _name, _font) -> None:
     signature.append(ImageFont.truetype('fonts/BrothersideSignature.otf', 90))
     signature.append(ImageFont.truetype('fonts/Theprestigesignature.otf', 90))
 
-    _draw.text((_x, _y), _name, font=signature[_font], anchor="ms", fill=black)
+    _draw.text((_x, _y), _name, font=signature[_font], anchor='ms', fill=black)
 
 
 def putInfo(_draw, _x, _y, _name, _designation, _font) -> None:
@@ -83,10 +83,10 @@ def putInfo(_draw, _x, _y, _name, _designation, _font) -> None:
     _designationFont = ImageFont.truetype(commonFont + '-Thin.ttf', 50)
 
     _draw.text((_x, _y), _name.upper(),
-               font=_nameFont, anchor="ms", fill=black)
+               font=_nameFont, anchor='ms', fill=black)
 
     _draw.text((_x, _y + 78), _designation,
-               font=_designationFont, anchor="ms", fill=black)
+               font=_designationFont, anchor='ms', fill=black)
 
     putSignature(_draw, _x, _y - 135, _name.title(), _font)
 
@@ -133,30 +133,30 @@ def work(_participant, _instructor, _advisor, _date, ) -> None:
 
     # Season on badge
     draw.text((3005, 1185), 'S' + str(_participant.season),
-              font=font1, anchor="mm", fill=blue)
+              font=font1, anchor='mm', fill=blue)
 
     # Season on text
     draw.text((1595, 1358), str(_participant.season),
-              font=font2, anchor="mm", fill=black)
+              font=font2, anchor='mm', fill=black)
 
     # Solve percentage
     draw.text((948, 1498), str(_participant.solve) +
-              '%', font=font2, anchor="mm", fill=black)
+              '%', font=font2, anchor='mm', fill=black)
 
     # Rank
     draw.text((1960, 1498), ordinal(_participant.rank),
-              font=font2, anchor="lm", fill=black)
+              font=font2, anchor='lm', fill=black)
 
     # Total participants
     draw.text((633, 1568), str(_participant.participants),
-              font=font2, anchor="mm", fill=black)
+              font=font2, anchor='mm', fill=black)
 
     # Unique ID
     draw.text((2995, 235), _participant.uid,
-              font=font3, anchor="lm", fill=black)
+              font=font3, anchor='lm', fill=black)
 
     # Issue date
-    draw.text((3250, 2309), _date, font=font3, anchor="mm", fill=black)
+    draw.text((3250, 2309), _date, font=font3, anchor='mm', fill=black)
 
     # NSUPS information
     putInfo(draw, 1865, 2340, _instructor, 'Season ' +
@@ -167,13 +167,14 @@ def work(_participant, _instructor, _advisor, _date, ) -> None:
     saveImage(img, _participant.name)
 
 
-def saveImage(_img, _name) -> None:
+def saveImage(_img: Image, _name) -> None:
     # _img.show()
-    _img.save(_name.lower() + ".png", quality=100)
+    _img.save(_name.lower() + '.png', quality=100)
 
 
 def generate(participantName: str, contestRank: int, solvePercentage: int, bootcampSeason: int, totalParticaipants: int,
              instructorName: str, advisorName: str, issueDate: str) -> None:
+
     bootcamp = Bootcamp(bootcampSeason, totalParticaipants)
     participant = Participant(participantName.upper(),
                               contestRank, solvePercentage, bootcamp)
