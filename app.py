@@ -30,7 +30,8 @@ def get():
 
     clear()
     generate(participantName, contestRank, solvePercentage, bootcampSeason, totalParticaipants, instructorName, advisorName,uniqueID, issueDate)
-    return send_file(f'{participantName.upper()}.png', mimetype='image/png')
+    #return send_file(f'{participantName.upper()}.png', mimetype='image/png')
+    return "Doge"
 
 if __name__ == "__main__":
     app.run(debug=True)
