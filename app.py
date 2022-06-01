@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return "Test"
+    return "Test**"
 
 @app.route('/get', methods=['GET'])
 def get():
