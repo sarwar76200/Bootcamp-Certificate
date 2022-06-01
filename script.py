@@ -173,11 +173,11 @@ def saveImage(_img: Image, _name) -> None:
 
 
 def generate(participantName: str, contestRank: int, solvePercentage: int, bootcampSeason: int, totalParticaipants: int,
-             instructorName: str, advisorName: str, issueDate: str) -> None:
+             instructorName: str, advisorName: str, uniqueID : str, issueDate: str) -> None:
 
     bootcamp = Bootcamp(bootcampSeason, totalParticaipants)
     participant = Participant(participantName.upper(),
                               contestRank, solvePercentage, bootcamp)
-    participant.uid = genUniqueID(participant)
+    participant.uid = uniqueID
 
     work(participant, instructorName, advisorName, issueDate)
