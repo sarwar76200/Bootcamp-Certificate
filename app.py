@@ -28,8 +28,8 @@ def get():
     uniqueID = content['unique_id']
     issueDate = content['issue_date']
 
-    #clear()
-    #generate(participantName, contestRank, solvePercentage, bootcampSeason, totalParticaipants, instructorName, advisorName,uniqueID, issueDate)
+    clear()
+    generate(participantName, contestRank, solvePercentage, bootcampSeason, totalParticaipants, instructorName, advisorName,uniqueID, issueDate)
     #return send_file(f'{participantName.upper()}.png', mimetype='image/png')
     return "Doge"
 
