@@ -7,7 +7,7 @@
   "name": <Participant Name> : String,
   "rank": <Graduation Contest Rank> : Integer,
   "solve_percentage": <Total Solve Percentage> : Integer,
-  "bootcamp_season": <Bootcamp Season> : Integr,
+  "bootcamp_season": <Bootcamp Season> : Integer,
   "participants": <Total Participants in that Bootcamp> : Integer,
   "instructor": <Instructor Name> : String,
   "advisor": <Advisor Name> : String,
