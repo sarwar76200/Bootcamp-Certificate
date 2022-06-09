@@ -1,19 +1,19 @@
-
+from io import BytesIO
 from flask import Flask, send_file, request
-from script import generate
+import script
 
-import glob, os
-
-def clear():
-    files = glob.glob("*.png")
-    for file in files:
-        os.remove(file)
+def send_image(_img):
+    img_io = BytesIO()
+    _img.save(img_io, 'PNG', quality=100)
+    img_io.seek(0)
+    return send_file(img_io, mimetype='image/png')
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
-    return "Test**"
+    return "TEST"
 
 @app.route('/get', methods=['GET'])
 def get():
@@ -27,15 +27,13 @@ def get():
     advisorName = content['advisor']
     uniqueID = content['unique_id']
     issueDate = content['issue_date']
+    img = script.generate(participantName, contestRank, solvePercentage, bootcampSeason, 
+                            totalParticaipants, instructorName, advisorName, uniqueID, issueDate)
+    return send_image(img)
 
-    clear()
-    generate(participantName, contestRank, solvePercentage, bootcampSeason, totalParticaipants, instructorName, advisorName,uniqueID, issueDate)
-    #return send_file(f'{participantName.upper()}.png', mimetype='image/png')
-    return "Doge"
 
 if __name__ == "__main__":
     app.run(debug=True)
-
 
 # {
 # 	"name" : "Toufique Hussain Bappy",

@@ -1,5 +1,4 @@
-from script import *
-
+from script import generate
 
 def main() -> None:
     # Function signature:

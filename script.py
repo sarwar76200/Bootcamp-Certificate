@@ -1,4 +1,3 @@
-import os
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -20,17 +19,15 @@ def getSeason(_season) -> str:
     return '0' + _season if len(_season) == 1 else _season
 
 
-def crop(_imgName: str, _right) -> None:
-    img = Image.open(_imgName)
-    img = img.crop((0, 0, _right, img.size[1]))
-    img.save(_imgName)
+def crop(_img, _right):
+    _img = _img.crop((0, 0, _right, _img.size[1]))
+    return _img
 
 
-def resize(_imgName, _compressValue) -> None:
-    img = Image.open(_imgName)
-    img = img.resize((img.size[0] - _compressValue,
-                     img.size[1]), Image.ANTIALIAS)
-    img.save(_imgName, quality=100)
+def resize(_img, _compressValue):
+    _img = _img.resize(
+        (_img.size[0] - _compressValue, _img.size[1]), Image.ANTIALIAS)
+    return _img
 
 
 def endPoint(_name, _fontSize) -> float:
@@ -40,34 +37,30 @@ def endPoint(_name, _fontSize) -> float:
     return (length * charSize) + (length * spaceSize)
 
 
-def genImage(participantName) -> None:
+def genImage(participantName):
     img = Image.new('RGBA', (6000, 350), (255, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     _fontSize = 180
     _font = ImageFont.truetype(commonFont + '-Medium.ttf', _fontSize)
     draw.text((0, 40), participantName, font=_font, fill=black)
-
-    img.save('image.png', format='png', quality=100)
     _endpoint = endPoint(participantName, _fontSize)
     compressValue = max(0, _endpoint - 2500 + 380)
-    crop('image.png', _endpoint)
-    resize('image.png', int(compressValue))
+    img = crop(img, _endpoint)
+    img = resize(img, int(compressValue))
+    return img
 
 
-def addName(_particaipantName) -> None:
-    genImage(_particaipantName)
-    img = list(['image.png', 'blank.jpg'])
-    front = Image.open(img[0])
-    back = Image.open(img[1])
+def addName(_particaipantName):
+    front = genImage(_particaipantName)
+    back = Image.open('template.jpg')
     front = front.convert('RGBA')
     back = back.convert('RGBA')
     back.paste(front, (380, 940), front)
-    back.save(_particaipantName + '.png', format='png', quality=100)
-    os.remove('image.png')
+    return back
 
 
 def putName(_name) -> None:
-    addName(_name)
+    return addName(_name)
 
 
 def putSignature(_draw, _x, _y, _name, _font) -> None:
@@ -126,9 +119,8 @@ def work(_participant, _instructor, _advisor, _date, ) -> None:
     font3 = ImageFont.truetype(commonFont + '-Medium.ttf', 25)
 
     # Participant name
-    putName(_participant.name)
 
-    img = Image.open(_participant.name + '.png')
+    img = putName(_participant.name)
     draw = ImageDraw.Draw(img)
 
     # Season on badge
@@ -163,21 +155,15 @@ def work(_participant, _instructor, _advisor, _date, ) -> None:
             getSeason(str(_participant.season)) + ' Instructor', 0)
     putInfo(draw, 790, 2340, _advisor, 'NSUPS Advisor', 1)
 
-    # Save the image
-    saveImage(img, _participant.name)
-
-
-def saveImage(_img: Image, _name) -> None:
-    # _img.show()
-    _img.save(_name.lower() + '.png', quality=100)
+    return img
 
 
 def generate(participantName: str, contestRank: int, solvePercentage: int, bootcampSeason: int, totalParticaipants: int,
-             instructorName: str, advisorName: str, uniqueID : str, issueDate: str) -> None:
+             instructorName: str, advisorName: str, uniqueID: str, issueDate: str) -> None:
 
     bootcamp = Bootcamp(bootcampSeason, totalParticaipants)
     participant = Participant(participantName.upper(),
                               contestRank, solvePercentage, bootcamp)
     participant.uid = uniqueID
 
-    work(participant, instructorName, advisorName, issueDate)
+    return work(participant, instructorName, advisorName, issueDate)
