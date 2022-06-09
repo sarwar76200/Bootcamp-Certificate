@@ -2,7 +2,7 @@
 
 ### Make a GET request to https://bootcamp-certificate.herokuapp.com/get with the following properties
 
-```json
+```cs
 {
   "name": <Participant Name> : String,
   "rank": <Graduation Contest Rank> : Integer,
